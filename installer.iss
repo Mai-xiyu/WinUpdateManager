@@ -50,4 +50,4 @@ Name: "{autodesktop}\Windows 更新管理工具"; Filename: "{app}\WinUpdateMana
 
 [Run]
 ; 安装完成后提供运行程序的选项
-Filename: "{app}\WinUpdateManager.exe"; Description: "{cm:LaunchProgram,Windows 更新管理工具}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\WinUpdateManager.exe"; Description: "{cm:LaunchProgram,Windows 更新管理工具}"; Flags: nowait postinstall skipifsilent shellexec
