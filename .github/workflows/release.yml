@@ -22,14 +22,18 @@ jobs:
 
       - name: Publish
         run: |
-          dotnet publish WinUpdateManager/WinUpdateManager.csproj -c Release -r win-x64 --self-contained -o publish
+          dotnet publish WinUpdateManager/WinUpdateManager.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o publish
 
-      - name: Zip artifacts
+      - name: Download Chinese Simplified Language File
         run: |
-          Compress-Archive -Path publish/* -DestinationPath WinUpdateManager-${{ github.ref_name }}-win-x64.zip
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/jrsoftware/issrc/main/Files/Languages/Unofficial/ChineseSimplified.isl" -OutFile "ChineseSimplified.isl"
+
+      - name: Build Installer with Inno Setup
+        run: |
+          iscc installer.iss /DAppVersion=${{ github.ref_name }} /OOutput /FWinUpdateManager-${{ github.ref_name }}-Setup
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: WinUpdateManager-${{ github.ref_name }}-win-x64.zip
+          files: Output/WinUpdateManager-${{ github.ref_name }}-Setup.exe
           generate_release_notes: true
